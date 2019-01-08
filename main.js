@@ -114,11 +114,85 @@ alert('Welcome to Quiz Ninja!');
 // "I'm learing JavaScript".search(/java/i);
 
 
+// const quiz = [
+//     { name: "Superman", realName: "Clark Kent" },
+//     { name: "Wonder Woman", realName: "Diana Prince" },
+//     { name: "Batman", realName: "Bruce Wayne" },
+// ];
+
+// const game = {
+//     start(quiz) {
+//         this.questions = [...quiz];
+//         this.score = 0;
+
+//         for (const question of this.questions) {
+//             this.question = question;
+//             this.ask();
+//         }
+//         this.gameOver();
+//     },
+//     ask() {
+//         const question = `What is ${this.question.name}'s real name?`;
+//         const response = prompt(question);
+//         this.check(response);
+//     },
+//     check(response) {
+//         const answer = this.question.realName;
+//         if (response === answer) {
+//             alert('Correct!');
+//             this.score++;
+//         } else {
+//             alert(`Wrong! The correct answer was ${answer}`);
+//         }
+//     },
+//     gameOver() {
+//         alert(`Game Over, you scored ${this.score} point${this.score !== 1 ? 's' : ''}`);
+//     }
+
+// }
+
+// v
+
+
+//Chapter 6
+
+//DOM and Jquery
+
+//JS
+// const ul = document.querySelector('ul#roster');
+// ul.querySelector('li#bats');
+
+//JQ
+
+// $('ul#roster').find('li#bats');
+
+
+
 const quiz = [
     { name: "Superman", realName: "Clark Kent" },
     { name: "Wonder Woman", realName: "Diana Prince" },
     { name: "Batman", realName: "Bruce Wayne" },
 ];
+
+//View Object
+
+
+const view = {
+    score: document.querySelector('#score strong'),
+    question: document.getElementById('question'),
+    result: document.getElementById('result'),
+    info: document.getElementById('info'),
+    render(target, content, attributes) {
+        for (const key in attributes) {
+            target.setAttribute(key, attributes[key]);
+        }
+        target.innerHTML = content;
+    }
+};
+
+
+//Game Object
+
 
 const game = {
     start(quiz) {
@@ -132,23 +206,25 @@ const game = {
         this.gameOver();
     },
     ask() {
-        const question = `What is ${this.question.name}'s real name?`;
+        const question = `What is ${this.question.name}'s real name ?`;
+        view.render(view.question, question);
         const response = prompt(question);
         this.check(response);
     },
     check(response) {
         const answer = this.question.realName;
         if (response === answer) {
+            view.render(view.result, 'Correct!', { 'class': 'correct' });
             alert('Correct!');
             this.score++;
+            view.render(view.score, this.score);
         } else {
-            alert(`Wrong! The correct answer was ${answer}`);
+            view.render(view.result, `Wrong! The correct answer was ${answer}`);
         }
     },
     gameOver() {
-        alert(`Game Over, you scored ${this.score} point${this.score !== 1 ? 's' : ''}`);
+        view.render(view.info, `Game Over, you scored ${this.score} point${this.score !== 1 ? 's' : ''}`)
     }
-
 }
 
 game.start(quiz);
